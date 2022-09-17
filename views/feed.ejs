@@ -4,10 +4,22 @@
       <ul class="row list-unstyled">
         <% for(var i=0; i<posts.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">
+            <h3><%=posts[i].title%></h3>
             <a href="/post/<%= posts[i]._id%>">
               <img class="img-fluid" src="<%= posts[i].image%>">
             </a>
+            <p>Likes: <%= posts[i].likes %></p>
+            <% for(var j=0; j<comments.length; j++) {%>
+              <% if( posts[i]._id ==  comments[j].post ) {%>
+              <p><%= posts[i]._id %></p>
+             <p><%= comments[j].post %></p>
+              <p><%= comments[j].comment %></p>
+            
+           
+           
           </li>
+          <%}%>
+          <% } %>
         <% } %>
         </ul>
     </div>

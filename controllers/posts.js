@@ -1,6 +1,7 @@
 const cloudinary = require("../middleware/cloudinary");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
+const { post } = require("../routes/main");
 
 module.exports = {
   getProfile: async (req, res) => {
@@ -14,8 +15,10 @@ module.exports = {
   getFeed: async (req, res) => {
     try {
       const posts = await Post.find().sort({ createdAt: "desc" }).lean();
-      res.render("feed.ejs", { posts: posts });
-    } catch (err) {
+      const comments = await Comment.find().sort({ createdAt: "desc" }).lean()
+      res.render("feed.ejs", { posts: posts, comments: comments });
+      console.log(comments, posts)
+    } catch (err) { 
       console.log(err);
     }
   },
@@ -32,6 +35,7 @@ module.exports = {
     try {
       // Upload image to cloudinary
       const result = await cloudinary.uploader.upload(req.file.path);
+      console.log(result)
 
       await Post.create({
         title: req.body.title,
