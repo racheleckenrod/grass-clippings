@@ -10,11 +10,10 @@
             </a>
             <p>Likes: <%= posts[i].likes %></p>
             <% for(var j=0; j<comments.length; j++) {%>
-              <% if( posts[i]._id ==  comments[j].post ) {%>
-              <p><%= posts[i]._id %></p>
-             <p><%= comments[j].post %></p>
+              <% if( comments[j].post  == `${posts[i]._id}` ) {%>
               <p><%= comments[j].comment %></p>
-            
+             <% console.log(posts[i]._id )%>
+             <% console.log(comments[j].post )%>
            
            
           </li>
