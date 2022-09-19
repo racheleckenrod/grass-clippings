@@ -15,7 +15,7 @@ module.exports = {
   getFeed: async (req, res) => {
     try {
       const posts = await Post.find().sort({ createdAt: "desc" }).lean();
-      const comments = await Comment.find().sort({ createdAt: "desc" }).lean()
+      const comments = await Comment.find().sort({ createdAt: "asc" }).lean()
       res.render("feed.ejs", { posts: posts, comments: comments });
       console.log(comments, posts)
     } catch (err) { 
@@ -60,6 +60,32 @@ module.exports = {
         }
       );
       console.log("Likes +1");
+      res.redirect(`/post/${req.params.id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  editPostPage:  async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.id);
+      const comments = await Comment.find({post: req.params.id}).sort({ createdAt: "desc" }).lean();
+      res.render("edit.ejs", { post: post, user: req.user, comments: comments });
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
+  editPost: async (req, res) => {
+    try {
+      await Post.findOneAndUpdate(
+        { _id: req.params.id },
+      
+        
+          { ...req.body }
+         
+      
+      );
+      console.log("Updated Post",req.body.title );
       res.redirect(`/post/${req.params.id}`);
     } catch (err) {
       console.log(err);
